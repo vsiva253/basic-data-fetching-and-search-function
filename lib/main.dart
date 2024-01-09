@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -92,53 +93,57 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
-          'Flutter Demo Home Page',
+          'Simple App',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.deepPurple,
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: TextField(
-              controller: searchController,
-              onChanged: (query) {
-                filterData(query);
-              },
-              decoration: InputDecoration(
-                hintText: 'Search',
-                prefixIcon: const Icon(Icons.search),
-                suffixIcon: searchController.text.isNotEmpty
-                    ? IconButton(
-                        icon: Icon(Icons.clear),
-                        onPressed: () {
-                          searchController.clear();
-                          filterData('');
-                        },
-                      )
-                    : null,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(8),
+              child: TextField(
+                controller: searchController,
+                onChanged: (query) {
+                  filterData(query);
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: const Icon(Icons.search),
+                  suffixIcon: searchController.text.isNotEmpty
+                      ? IconButton(
+                          icon: Icon(Icons.clear),
+                          onPressed: () {
+                            searchController.clear();
+                            filterData('');
+                          },
+                        )
+                      : null,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-                    itemCount: filteredData.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        elevation: 2,
-                        child: ListTile(
-                          title: Text('ID: ${filteredData[index]['id']}'),
-                          subtitle: Text(filteredData[index]['Column 1']),
-                        ),
-                      );
-                    },
-                  ),
-          )
-        ],
+            Expanded(
+              child: isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                      itemCount: filteredData.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          color: Colors.grey[200],
+                          elevation: 2,
+                          child: ListTile(
+                            title: Text('ID: ${filteredData[index]['id']}'),
+                            subtitle: Text(filteredData[index]['Column 1']),
+                          ),
+                        );
+                      },
+                    ),
+            )
+          ],
+        ),
       ),
     );
   }
